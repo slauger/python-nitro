@@ -1,2 +1,3 @@
 # python-nitro
-Examples for connection to the NITRO API for the Citrix NetScaler ADC with Python Requests
+
+Examples for connecting to the NITRO API for the Citrix NetScaler ADC with Python (using Requests)
