@@ -13,14 +13,12 @@ import argparse
 import requests
 import json
 
-parser = argparse.ArgumentParser(description='command line add_args.')
-
 # todos:
 # - add inifile
 # - use choices (e.g. for ssl)
 add_args = {
   '--hostname': {
-    'metavar': '<hostname',
+    'metavar': '<hostname>',
     'help': 'Hostname of the NetScaler appliance to connect to',
     'type': str,
     'default': False,
@@ -68,6 +66,13 @@ add_args = {
     'default': 'nsroot',
     'required': False,
   },
+  '--api': {
+    'metavar': '<v1|v2>',
+    'help': 'Establish connection to NetScaler using SSL',
+    'type': str,
+    'default': 'nsroot',
+    'required': False,
+  },
   '--verify': {
     'metavar': '<true|false>',
     'help': 'Verify the ssl certificate of the target machine (default: false)',
@@ -77,35 +82,37 @@ add_args = {
   }
 }
 
-for add_arg in add_args:
+def add_argument(parser, arg, params):
   parser.add_argument(
-    add_arg, metavar=add_args[add_arg]['metavar'],
-    type=add_args[add_arg]['type'],
-    help=add_args[add_arg]['help'],
-    default=add_args[add_arg]['default'],
-    required=add_args[add_arg]['required']
+    arg, metavar=params['metavar'],
+    type=params['type'],
+    help=params['help'],
+    default=params['default'],
+    required=params['required']
   )
 
+def nitro_client(args):
+  if args.ssl == True:
+    protocol = "https://"
+  else:
+    protocol = "http://"
+  headers = {
+    'X-NITRO-USER': args.username,
+    'X-NITRO-PASS': args.password,
+    'Content-Type': 'application/vnd.com.citrix.netscaler.' + args.objecttype + '+json',
+  }
+  port = ""
+  api_version = "v1"
+  url = protocol + args.hostname + port + "/nitro/" + api_version + "/" + args.endpoint + "/" + args.objecttype
+  data = {}
+  response = requests.get(url, headers=headers, data=data, verify=False)
+
+  return response.json()
+
+# add cli arguments
+parser = argparse.ArgumentParser(description='command line add_args.')
+for key in add_args:
+  add_argument(parser, key, add_args[key])
 args = parser.parse_args()
 
-if args.ssl == True:
-  protocol = "https://"
-else:
-  protocol = "http://"
-
-headers = {
-  'X-NITRO-USER': args.username,
-  'X-NITRO-PASS': args.password,
-  'Content-Type': 'application/vnd.com.citrix.netscaler.' + args.objecttype + '+json',
-}
-
-port = ""
-api_version = "v1"
-
-url = protocol + args.hostname + port + "/nitro/" + api_version + "/" + args.endpoint + "/" + args.objecttype
-
-data = {}
-
-response = requests.get(url, headers=headers, data=data, verify=False)
-
-print(json.dumps(response.json()))
+print(nitro_client(args))
