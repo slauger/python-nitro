@@ -10,7 +10,6 @@ __maintainer__ = "Simon Lauger"
 __email__ = "simon@lauger.de"
 
 import requests
-import json
 
 class NitroClient():
   def __init__(self, url, username, password):
