@@ -11,43 +11,38 @@ __email__ = "simon@lauger.de"
 
 import argparse
 import nitro
+import os.path
+from ConfigParser import SafeConfigParser
 
 add_args = {
   '--objectname': {
-    'metavar': '<objectname>',
+    'metavar': '<name>',
     'help': 'Filter request to a specific objectname',
     'type': str,
     'default': None,
     'required': False,
   },
-  '--username': {
-    'metavar': '<username>',
-    'help': 'Username to log into box as (default: nsroot)',
-    'type': str,
-    'default': 'nsroot',
-    'required': False,
-  },
-  '--password': {
-    'metavar': '<password>',
-    'help': 'Password for login username (default: nsroot)',
-    'type': str,
-    'default': 'nsroot',
-    'required': False,
-  },
   '--params': {
-    'metavar': '<objectname>',
-    'help': 'Additional arguments for the request (e.g. name:foo)',
+    'metavar': '<params>',
+    'help': 'Additional arguments for the request (e.g. args=name:foo)',
     'type': str,
     'default': None,
     'required': False,
   },
-  '--verify': {
-    'metavar': '<true|false>',
-    'help': 'Verify the ssl certificate of the target machine (default: false)',
-    'type': bool,
-    'default': False,
+  '--config': {
+    'metavar': '<file>',
+    'help': 'Path to the ini config file (default: ~/.netscaler.ini)',
+    'type': str,
+    'default': '~/.netscaler.ini',
     'required': False,
-  }
+  },
+  '--section': {
+    'metavar': '<section>',
+    'help': 'Section in the ini config file (default: netscaler)',
+    'type': str,
+    'default': 'netscaler',
+    'required': False,
+  },
 }
 
 def add_argument(parser, arg, params):
@@ -64,27 +59,21 @@ def add_argument(parser, arg, params):
 parser = argparse.ArgumentParser(description='command line add_args.')
 
 # required arguments
-parser.add_argument('url',
-    metavar='<hostname>',
-    help='URL to NetScaler appliance to connect to',
-    type=str,
-    default=None,
-)
 parser.add_argument('method',
-    metavar='<get|post|delete>',
-    help='HTTP method',
+    metavar='<method>',
+    help='HTTP method (get, post, put, delete)',
     type=str,
     default=None,
 )
 parser.add_argument('endpoint',
-    metavar='<config|stat>',
-    help='NITRO API endpoint (default: stat)',
+    metavar='<endpoint>',
+    help='NITRO API endpoint (config, stat)',
     type=str,
     default=None,
 )
 parser.add_argument('objecttype',
     metavar='<objecttype>',
-    help='Objecttype (target) to for the check command',
+    help='target object for the request (e.g. lbvserver)',
     type=str,
     default=None,
 )
@@ -96,14 +85,47 @@ for key in add_args:
 # parse arguments
 args = parser.parse_args()
 
-# start nitro client
-nitro_client = nitro.NitroClient(args.url, args.username, args.password)
+# read configuration from ~/.netscaler.ini
+cfgfile = os.path.expanduser(args.config)
+section = args.section
 
-# disable ssl verification
-nitro_client.set_verify(args.verify)
+if not os.path.isfile(cfgfile):
+   raise Exception('required configuration file not found (' + cfgfile + ')')
+
+config = SafeConfigParser()
+config.read(cfgfile)
+
+if config.has_option(section, 'url'):
+    url = config.get(section, 'url')
+
+if config.has_option(section, 'username'):
+   username = config.get(section, 'username')
+
+if config.has_option(section, 'password'):
+   password = config.get(section, 'password')
+
+if config.has_option(section, 'verify_ssl'):
+   verify_ssl = config.getboolean(section, 'verify_ssl')
+else:
+    verify_ssl = True
+
+# start nitro client
+nitro_client = nitro.NitroClient(url, username, password)
+
+# disable ssl verification if needed
+nitro_client.set_verify(verify_ssl)
 
 # do the request to the NITRO API
-result = nitro_client.request(args.method, args.endpoint, args.objecttype, args.objectname, args.params)
+result = nitro_client.request(
+    method=args.method,
+    endpoint=args.endpoint,
+    objecttype=args.objecttype,
+    objectname=args.objectname,
+    params=args.params
+)
 
 # print result
-print(result.json())
+try:
+    print(result.json())
+except:
+    print(result)

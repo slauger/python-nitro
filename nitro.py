@@ -50,6 +50,8 @@ class NitroClient():
 
     method_callback = getattr(requests, method)
 
+    print url
+
     self._result = method_callback(
       url,
       headers=self._headers,
