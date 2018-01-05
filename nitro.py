@@ -32,29 +32,51 @@ class NitroClient():
   def verify(self, verify):
     self._verify = verify
 
-  def stat(self, objecttype, objectname = None, params = None):
-    url = self._url + '/nitro/v1/stat/' + objecttype
+  def request(self, method, endpoint, objecttype, objectname = None, params = None):
+    url = self._url + '/nitro/v1/' + endpoint + '/' + objecttype
 
     if objectname != None:
       url += '/' + objectname
 
     if params != None:
-      url += '?args='
+      url += '?'
 
       if isinstance(params, dict):
         for key, value in params.iteritems():
-          url += key + ":" + value
+          url += key + "=" + value
       else:
         url += params
 
-    self._result = requests.get(
+    method_callback = getattr(requests, method)
+
+    self._result = method_callback(
       url,
       headers=self._headers,
       verify=self._verify,
     )
 
-    return self._result.json()
+    return self._result
 
-  def conf(self):
-    return False
+  def get_stat(self, objecttype, objectname = None, params = None):
+    return self.request(get, 'stat', objecttype, objectname, params)
 
+  def get_config(self, objecttype, objectname = None, params = None):
+    return self.request(get, 'config', objecttype, objectname, params)
+
+  def post_stat(self, objecttype, objectname = None, params = None):
+    return self.request(post, 'stat', objecttype, objectname, params)
+
+  def post_config(self, objecttype, objectname = None, params = None):
+    return self.request(post, 'config', objecttype, objectname, params)
+  
+  def put_stat(self, objecttype, objectname = None, params = None):
+    return self.request(put, 'stat', objecttype, objectname, params)
+
+  def put_config(self, objecttype, objectname = None, params = None):
+    return self.request(put, 'config', objecttype, objectname, params)
+
+  def delete_stat(self, objecttype, objectname = None, params = None):
+    return self.request(delete, 'stat', objecttype, objectname, params)
+
+  def delete_config(self, objecttype, objectname = None, params = None):
+    return self.request(delete, 'config', objecttype, objectname, params)
