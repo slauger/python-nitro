@@ -13,12 +13,12 @@ import argparse
 import nitro
 
 add_args = {
-  '--url': {
-    'metavar': '<hostname>',
-    'help': 'URL to NetScaler appliance to connect to',
+  '--objectname': {
+    'metavar': '<objectname>',
+    'help': 'Filter request to a specific objectname',
     'type': str,
-    'default': False,
-    'required': True,
+    'default': None,
+    'required': False,
   },
   '--username': {
     'metavar': '<username>',
@@ -34,32 +34,11 @@ add_args = {
     'default': 'nsroot',
     'required': False,
   },
-  '--objecttype': {
-    'metavar': '<objecttype>',
-    'help': 'Objecttype (target) to for the check command',
-    'type': str,
-    'default': None,
-    'required': True,
-  },
-  '--objectname': {
-    'metavar': '<objectname>',
-    'help': 'Filter request to a specific objectname',
-    'type': str,
-    'default': None,
-    'required': False,
-  },
   '--params': {
     'metavar': '<objectname>',
     'help': 'Additional arguments for the request (e.g. name:foo)',
     'type': str,
     'default': None,
-    'required': False,
-  },
-  '--endpoint': {
-    'metavar': '<config|stat>',
-    'help': 'NITRO API endpoint (default: stat)',
-    'type': str,
-    'default': 'stat',
     'required': False,
   },
   '--verify': {
@@ -72,21 +51,59 @@ add_args = {
 }
 
 def add_argument(parser, arg, params):
-  parser.add_argument(
-    arg, metavar=params['metavar'],
-    type=params['type'],
-    help=params['help'],
-    default=params['default'],
-    required=params['required']
-  )
+    parser.add_argument(
+        arg,
+        metavar=params['metavar'],
+        type=params['type'],
+        help=params['help'],
+        default=params['default'],
+        required=params['required']
+    )
 
 # add cli arguments
 parser = argparse.ArgumentParser(description='command line add_args.')
+
+# required arguments
+parser.add_argument('url',
+    metavar='<hostname>',
+    help='URL to NetScaler appliance to connect to',
+    type=str,
+    default=None,
+)
+parser.add_argument('method',
+    metavar='<get|post|delete>',
+    help='HTTP method',
+    type=str,
+    default=None,
+)
+parser.add_argument('endpoint',
+    metavar='<config|stat>',
+    help='NITRO API endpoint (default: stat)',
+    type=str,
+    default=None,
+)
+parser.add_argument('objecttype',
+    metavar='<objecttype>',
+    help='Objecttype (target) to for the check command',
+    type=str,
+    default=None,
+)
+
+# optional arguments
 for key in add_args:
   add_argument(parser, key, add_args[key])
+
+# parse arguments
 args = parser.parse_args()
 
 # start nitro client
 nitro_client = nitro.NitroClient(args.url, args.username, args.password)
+
+# disable ssl verification
 nitro_client.verify(args.verify)
-print(nitro_client.stat(args.objecttype, args.objectname, args.params))
+
+# do the request to the NITRO API
+result = nitro_client.request(args.method, args.endpoint, args.objecttype, args.objectname, args.params)
+
+# print result
+print(result.json())
