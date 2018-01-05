@@ -17,4 +17,3 @@ Examples for connecting to the NITRO API for the Citrix NetScaler ADC with Pytho
 ## TODOs
 
 - read username and password from configuration file
-- add def NitroClient::conf()
