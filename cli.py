@@ -100,7 +100,7 @@ args = parser.parse_args()
 nitro_client = nitro.NitroClient(args.url, args.username, args.password)
 
 # disable ssl verification
-nitro_client.verify(args.verify)
+nitro_client.set_verify(args.verify)
 
 # do the request to the NITRO API
 result = nitro_client.request(args.method, args.endpoint, args.objecttype, args.objectname, args.params)

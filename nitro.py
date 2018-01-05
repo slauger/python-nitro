@@ -17,8 +17,9 @@ class NitroClient():
     self._headers = {
       'X-NITRO-USER': username,
       'X-NITRO-PASS': password,
+      'Accept': 'application/json',
     }
-    self._verify = False
+    self._verify = True
     
   def set_url(self, url):
     self._url = url
@@ -29,7 +30,7 @@ class NitroClient():
   def set_password(self, password):
     self._headers['X-NITRO-PASS'] = password
 
-  def verify(self, verify):
+  def set_verify(self, verify):
     self._verify = verify
 
   def request(self, method, endpoint, objecttype, objectname = None, params = None):
