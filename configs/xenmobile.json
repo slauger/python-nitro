@@ -1,0 +1,58 @@
+{
+    "server":
+    [
+        {
+            "name": "xms01.customer.local",
+            "ipaddress": "172.16.1.101",
+            "comment": "xenmobile"
+        },
+        {
+            "name": "xms01.customer.local",
+            "ipaddress": "172.16.1.102",
+            "comment": "xenmobile"
+        }
+    ],
+    "servicegroup":
+    [
+        {
+            "servicegroupname": "sg_xm_mdm",
+            "servicetype": "SSL_BRIDGE"
+        },
+        {
+            "servicegroupname": "sg_xm_mdm_ios",
+            "servicetype": "SSL_BRIDGE"
+        }
+    ],
+    "servicegroup_servicegroupmember_binding":
+    [
+        {
+            "servicegroupname": "sg_xm_mdm",
+            "servername": "xms01.customer.local",
+            "port": "443"
+        },
+        {
+            "servicegroupname": "sg_xm_mdm_ios",
+            "servername": "xms01.customer.local",
+            "port": "9443"
+        }
+    ],
+    "lbvserver": 
+    [ 
+        {
+            "name": "vs_lb_ssl_bridge_xm_mdm",
+            "ipv46": "172.16.2.123",
+            "port": "443",
+            "servicetype": "SSL_BRIDGE",
+            "persistencetype": "SSLSESSION",
+            "timeout": "5"
+        },
+        { 
+            "name": "vs_lb_ssl_bridge_xm_mdm_ios", 
+            "ipv46": "172.16.123.123",
+            "port": "8443",
+            "servicetype": "SSL_BRIDGE",
+            "persistencetype": "SSLSESSION",
+            "timeout": "5"
+        }
+    ]
+}
