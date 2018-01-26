@@ -29,3 +29,7 @@ password = nsroot
 ./config.py post configs/xenmobile-01.json
 ./config.py put configs/xenmobile-02.json
 ```
+
+## Hints
+
+- [Use DHCP for inital bootstrap process](https://docs.citrix.com/ja-jp/netscaler/11/netscaler-hardware-installation/netscaler-initial-configuration.html)
