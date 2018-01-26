@@ -23,3 +23,9 @@ password = nsroot
 ```
 ./cli.py get config systemfile --params 'args=filename:fullbackup.tgz,filelocation:%2Fvar%2Fns_sys_backup%2F'
 ```
+
+**Push bulk configuration**
+```
+./config.py post configs/xenmobile-01.json
+./config.py put configs/xenmobile-02.json
+```
