@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""cli.py: Client for the Citrix NetScaler NITRO API."""
+"""config.py: bulk configuration for NetScaler trough the NITRO API."""
 
 __author__ = "Simon Lauger"
 __copyright__ = "Copyright 2018, IT Consulting Simon Lauger"
@@ -44,16 +44,16 @@ def add_argument(parser, arg, params):
 # add cli arguments
 parser = argparse.ArgumentParser(description='command line arguments.')
 
-# required arguments
-parser.add_argument('host',
+parser.add_argument('method',
     metavar='<method>',
-    help='HTTP method (get, post, put, delete)',
+    help='http method (get/post/put/delete)',
     type=str,
     default=None,
 )
+
 parser.add_argument('file',
-    metavar='<endpoint>',
-    help='NITRO API endpoint (config, stat)',
+    metavar='<file>',
+    help='command file for the macro api',
     type=str,
     default=None,
 )
@@ -98,24 +98,26 @@ else:
 with open(args.file, 'r') as socket:
   payload = file.read(socket)
 
-print(payload)
-
 # start nitro client
 nitro_client = nitro.NitroClient(url, username, password)
 
 # disable ssl verification if needed
 nitro_client.set_verify(verify_ssl)
 
+# rollback is not supported on update
+if args.method != 'post':
+  nitro_client.on_error('exit')
+
 # do the request to the NITRO API
 result = nitro_client.request(
-    'post',
-    endpoint='config',
-    objecttype='macroapi',
-    data=payload
+  args.method,
+  endpoint='config',
+  objecttype='macroapi',
+  data=payload
 )
 
 # print result
 try:
     print(result.json())
 except:
-    print(result)
+    print(result.text)

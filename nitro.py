@@ -35,6 +35,9 @@ class NitroClient():
   def set_verify(self, verify):
     self._verify = verify
 
+  def on_error(self, action):
+    self._headers['X-NITRO-ONERROR'] = action
+
   def request(self, method, endpoint, objecttype, objectname = None, params = None, data = None):
     url = self._url + '/nitro/v1/' + endpoint + '/' + objecttype
 

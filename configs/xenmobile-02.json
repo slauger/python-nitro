@@ -1,0 +1,15 @@
+{
+    "vpnclientlessaccessprofile":
+    [
+        {
+            "profilename": "prof_clientless_sf_rewrite",
+            "urlrewritepolicylabel": "ns_cvpn_default_inet_url_label",
+            "clientconsumedcookies": "storefront_cookies"
+        },
+        {
+            "profilename": "prof_clientless_no_rewrite",
+            "urlrewritepolicylabel": "ns_cvpn_default_inet_url_label",
+            "clientconsumedcookies": "storefront_cookies"
+        }
+    ]
+}

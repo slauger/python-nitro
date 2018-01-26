@@ -85,19 +85,20 @@
     "vpnvserver":
     [
         {
-            "name": "",
+            "name": "vs_vpn_xm_mam_gateway",
             "servicetype": "SSL",
-            "ipv46": "",
-            "port": "",
-            "comment": "",
+            "ipv46": "172.16.123.125",
+            "port": "443",
             "maxloginattempts": "10",
             "failedlogintimeout": "30"
         }
     ],
-    "vpnvserver_authenticationpolicy_binding":
+    "vpnvserver_authenticationldappolicy_binding":
     [
         {
-            "foo": "vpnglobal_authenticationcertpolicy_binding"
+            "name": "vs_vpn_xm_mam_gateway",
+            "policy": "pol_auth_ldap",
+            "priority": "100"
         }
     ],
     "vpnsessionaction":
@@ -207,31 +208,66 @@
     "policypatset":
     [
         {
-            "foo": "bar"
+            "name": "storefront_cookies"
         }
     ],
     "policypatset_pattern_binding":
     [
         {
-            "foo": "bar"
+            "string": "mdm.example.com",
+            "name": "ns_cvpn_default_inet_domains"
+        },
+        {
+            "string": "mdm.example.com:8443",
+            "name": "ns_cvpn_default_inet_domains"
+        },
+        {
+            "string": "CsrfToken",
+            "name": "storefront_cookies"
+        },
+        {
+            "string": "ASP.NET_SessionId",
+            "name": "storefront_cookies"
+        },
+        {
+            "string": "CtxsPluginAssistantState",
+            "name": "storefront_cookies"
+        },
+        {
+            "string": "CtxsAuthId",
+            "name": "storefront_cookies"
         }
     ],
     "vpnclientlessaccesspolicy":
     [
         {
-            "foo": "bar"
+            "name": "pol_clientless_sf_rewrite",
+            "rule": "true",
+            "profilename": "prof_clientless_sf_rewrite"
+        },
+        {
+            "name": "pol_clientless_no_rewrite",
+            "rule": "HTTP.REQ.HEADER(\"User-Agent\").CONTAINS(\"CitrixReceiver\") && HTTP.REQ.HEADER(\"X-Citrix-Gateway\").EXISTS",
+            "profilename": "prof_clientless_no_rewrite"
         }
     ],
-    "vpnclientlessaccesspolicy_binding":
+    "vpnvserver_vpnclientlessaccesspolicy_binding":
     [
         {
-            "foo": "bar"
+            "name": "vs_vpn_xm_mam_gateway",
+            "policy": "pol_clientless_sf_rewrite",
+            "priority": "100"
+        },
+        {
+            "name": "vs_vpn_xm_mam_gateway",
+            "policy": "pol_clientless_sf_rewrite",
+            "priority": "200"
         }
     ],
     "vpnglobal_domain_binding":
     [
         {
-            "foo": "bar",
+            "intranetdomain": "customer.local"
         }
     ],
     "vpnvserver_cachepolicy_binding":
@@ -276,8 +312,7 @@
     [
         {
             "hostname": "mdm.example.com",
-            "ipaddress": "172.16.123.124",
-            "type": "ADNS"
+            "ipaddress": "172.16.123.124"
         }
     ]
 }
