@@ -17,7 +17,9 @@ class NitroClient():
     self._headers = {
       'X-NITRO-USER': username,
       'X-NITRO-PASS': password,
+      'X-NITRO-ONERROR': 'rollback',
       'Accept': 'application/json',
+      'Content-Type': 'application/json',
     }
     self._verify = True
     
@@ -33,7 +35,7 @@ class NitroClient():
   def set_verify(self, verify):
     self._verify = verify
 
-  def request(self, method, endpoint, objecttype, objectname = None, params = None):
+  def request(self, method, endpoint, objecttype, objectname = None, params = None, data = None):
     url = self._url + '/nitro/v1/' + endpoint + '/' + objecttype
 
     if objectname != None:
@@ -50,8 +52,11 @@ class NitroClient():
 
     method_callback = getattr(requests, method)
 
+    print(url)
+
     self._result = method_callback(
       url,
+      data=data,
       headers=self._headers,
       verify=self._verify,
     )

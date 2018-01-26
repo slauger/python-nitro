@@ -1,0 +1,14 @@
+{ 
+    "lbvserver": 
+    [ 
+        { 
+            "name":"new_lbvserver1",
+            "servicetype":"http" 
+        }, 
+ 
+        { 
+            "name":"new_lbvserver2", 
+            "servicetype":"http" 
+        }
+    ] 
+}
