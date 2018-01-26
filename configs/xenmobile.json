@@ -5,11 +5,6 @@
             "name": "xms01.customer.local",
             "ipaddress": "172.16.1.101",
             "comment": "xenmobile"
-        },
-        {
-            "name": "xms01.customer.local",
-            "ipaddress": "172.16.1.102",
-            "comment": "xenmobile"
         }
     ],
     "servicegroup":
@@ -21,6 +16,10 @@
         {
             "servicegroupname": "sg_xm_mdm_ios",
             "servicetype": "SSL_BRIDGE"
+        },
+        {
+            "servicegroupname": "sg_xm_mam",
+            "servicetype": "SSL"
         }
     ],
     "servicegroup_servicegroupmember_binding":
@@ -34,6 +33,26 @@
             "servicegroupname": "sg_xm_mdm_ios",
             "servername": "xms01.customer.local",
             "port": "9443"
+        },
+        {
+            "servicegroupname": "sg_xm_mam",
+            "servername": "xms01.customer.local",
+            "port": "8443"
+        }
+    ],
+    "servicegroup_lbmonitor_binding":
+    [
+        {
+            "servicegroupname": "sg_xm_mdm",
+            "monitor_name": "tcp"
+        },
+        {
+            "servicegroupname": "sg_xm_mdm_ios",
+            "monitor_name": "tcp"
+        },
+        {
+            "servicegroupname": "sg_xm_mam",
+            "monitor_name": "tcp"
         }
     ],
     "lbvserver": 
@@ -53,6 +72,100 @@
             "servicetype": "SSL_BRIDGE",
             "persistencetype": "SSLSESSION",
             "timeout": "5"
+        },
+        { 
+            "name": "vs_lb_ssl_mam", 
+            "ipv46": "172.16.123.124",
+            "port": "8443",
+            "servicetype": "SSL_BRIDGE",
+            "persistencetype": "SSLSESSION",
+            "timeout": "5"
+        }
+    ],
+    "vpnvserver":
+    [
+        {
+            "name": "",
+            "servicetype": "SSL",
+            "ipv46": "",
+            "port": "",
+            "comment": "",
+            "maxloginattempts": "10",
+            "failedlogintimeout": "30"
+        }
+    ],
+    "vpnvserver_authenticationpolicy_binding":
+    [
+        {
+            "foo": "vpnglobal_authenticationcertpolicy_binding"
+        }
+    ],
+    "vpnsessionaction":
+    [
+        {
+            "foo": "bar"
+        }
+    ],
+    "vpnsessionpolicy":
+    [
+        {
+            "foo": "bar"
+        }
+    ],
+    "aaauser_vpnsessionpolicy_binding":
+    [
+        {
+            "foo": "bar"
+        }
+    ],
+    "vpnvserver_staserver_binding":
+    [
+        {
+            "foo": "bar"
+        }
+    ],
+    "policypatset":
+    [
+        {
+            "foo": "bar"
+        }
+    ],
+    "policypatset_pattern_binding":
+    [
+        {
+            "foo": "bar"
+        }
+    ],
+    "vpnclientlessaccesspolicy":
+    [
+        {
+            "foo": "bar"
+        }
+    ],
+    "vpnclientlessaccesspolicy_binding":
+    [
+        {
+            "foo": "bar"
+        }
+    ],
+    "vpnglobal_domain_binding":
+    [
+        {
+            "foo": "bar",
+        }
+    ],
+    "vpnvserver_cachepolicy_binding":
+    [
+        {
+            "foo": "bar",
+        }
+    ],
+    "dnsaddrec":
+    [
+        {
+            "hostname": "mdm.example.com",
+            "ipaddress": "172.16.123.124",
+            "type": "ADNS"
         }
     ]
 }
