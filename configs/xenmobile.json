@@ -103,25 +103,105 @@
     "vpnsessionaction":
     [
         {
-            "foo": "bar"
+            "name": "act_session_xenmobile_os",
+            "splitdns": "BOTH",
+            "sesstimeout": "1440",
+            "splittunnel": "OFF",
+            "transparentinterception": "ON",
+            "defaultauthorizationaction": "ALLOW",
+            "sso": "ON",
+            "ssocredential": "PRIMARY",
+            "icaproxy": "OFF",
+            "clientchoices": "OFF",
+            "forcedtimeout": "1440",
+            "clientlessvpnmode": "ON",
+            "clientlessmodeurlencoding": "TRANSPARENT",
+            "securebrowse": "ENABLED",
+            "storefronturl": "https://mdm.example.com:8443"
+        },
+        {
+            "name": "act_session_xenmobile_web",
+            "splitdns": "BOTH",
+            "sesstimeout": "1440",
+            "splittunnel": "OFF",
+            "transparentinterception": "ON",
+            "defaultauthorizationaction": "ALLOW",
+            "sso": "ON",
+            "ssocredential": "PRIMARY",
+            "icaproxy": "OFF",
+            "clientchoices": "OFF",
+            "forcedtimeout": "1440",
+            "clientlessvpnmode": "ON",
+            "clientlessmodeurlencoding": "TRANSPARENT",
+            "securebrowse": "ENABLED",
+            "storefronturl": "https://mdm.example.com:8443",
+            "homepage": "https://mdm.customer.com:8443/Citrix/StoreWeb",
+            "wihome": "https://mdm.customer.de:8443/Citrix/StoreWeb"
+        },
+        {
+            "name": "act_session_xenmobile_ag",
+            "splitdns": "BOTH",
+            "sesstimeout": "1440",
+            "splittunnel": "OFF",
+            "transparentinterception": "ON",
+            "defaultauthorizationaction": "ALLOW",
+            "sso": "ON",
+            "ssocredential": "PRIMARY",
+            "icaproxy": "OFF",
+            "clientchoices": "OFF",
+            "forcedtimeout": "1440",
+            "clientlessvpnmode": "OFF",
+            "clientlessmodeurlencoding": "TRANSPARENT",
+            "securebrowse": "ENABLED",
+            "storefronturl": "https://mdm.example.com:8443",
+            "homepage": "https://mdm.customer.com:8443/Citrix/StoreWeb"
         }
     ],
     "vpnsessionpolicy":
     [
         {
-            "foo": "bar"
+            "name": "pol_session_xenmobile_os",
+            "rule": "REQ.HTTP.HEADER User-Agent CONTAINS CitrixReceiver && REQ.HTTP.HEADER X-Citrix-Gateway EXISTS",
+            "action": "act_session_xenmobile_os"
+        },
+        {
+            "name": "pol_session_xenmobile_web",
+            "rule": "REQ.HTTP.HEADER User-Agent NOTCONTAINS CitrixReceiver && REQ.HTTP.HEADER Referer EXISTS",
+            "action": "pol_session_xenmobile_web"
+        },
+        {
+            "name": "pol_session_xenmobile_ag",
+            "rule": "REQ.HTTP.HEADER User-Agent NOTCONTAINS CitrixReceiver && REQ.HTTP.HEADER Referer NOTEXISTS",
+            "action": "act_session_xenmobile_ag"
         }
     ],
-    "aaauser_vpnsessionpolicy_binding":
+    "vpnvserver_vpnsessionpolicy_binding":
     [
         {
-            "foo": "bar"
+            "name": "vs_vpn_xm_mam_gateway",
+            "priority": "100",
+            "policy": "pol_session_xenmobile_os",
+            "gotopriorityexpression": "END"
+        },
+        {
+            "name": "vs_vpn_xm_mam_gateway",
+            "priority": "200",
+            "policy": "pol_session_xenmobile_web",
+            "gotopriorityexpression": "END"
+        },
+        {
+            "name": "vs_vpn_xm_mam_gateway",
+            "priority": "300",
+            "policy": "pol_session_xenmobile_ag",
+            "gotopriorityexpression": "END"
         }
     ],
     "vpnvserver_staserver_binding":
     [
         {
-            "foo": "bar"
+            "name": "vs_vpn_xm_mam_gateway",
+            "staaddresstype": "IPV4",
+            "staserver": "https://xms01.tmxlab.local:8443"
         }
     ],
     "policypatset":
@@ -157,7 +237,39 @@
     "vpnvserver_cachepolicy_binding":
     [
         {
-            "foo": "bar",
+            "name": "vs_vpn_xm_mam_gateway",
+            "priority": "100",
+            "policy": "_cacheTCVPNStaticObjects",
+            "gotopriorityexpression": "END",
+            "bindpoint": "REQUEST"
+        },
+        {
+            "name": "vs_vpn_xm_mam_gateway",
+            "priority": "200",
+            "policy": "_cacheOCVPNStaticObjects",
+            "gotopriorityexpression": "END",
+            "bindpoint": "REQUEST"
+        },
+        {
+            "name": "vs_vpn_xm_mam_gateway",
+            "priority": "300",
+            "policy": "_cacheVPNStaticObjects",
+            "gotopriorityexpression": "END",
+            "bindpoint": "REQUEST"
+        },
+        {
+            "name": "vs_vpn_xm_mam_gateway",
+            "priority": "400",
+            "policy": "_noCacheRest",
+            "gotopriorityexpression": "END",
+            "bindpoint": "REQUEST"
+        },
+        {
+            "name": "vs_vpn_xm_mam_gateway",
+            "priority": "400",
+            "policy": "_cacheWFStaticObjects",
+            "gotopriorityexpression": "END",
+            "bindpoint": "RESPONSE"
         }
     ],
     "dnsaddrec":
