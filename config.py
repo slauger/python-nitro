@@ -12,6 +12,7 @@ __email__ = "simon@lauger.de"
 import argparse
 import nitro
 import os.path
+import json
 from ConfigParser import SafeConfigParser
 
 add_args = {
@@ -105,8 +106,20 @@ nitro_client = nitro.NitroClient(url, username, password)
 nitro_client.set_verify(verify_ssl)
 
 # rollback is not supported on update
-if args.method != 'post':
-  nitro_client.on_error('exit')
+#if args.method != 'post':
+#  nitro_client.on_error('exit')
+
+# clear configuration
+result = nitro_client.request(
+  method='post',
+  endpoint='config',
+  objecttype='nsconfig',
+  params={'action': 'clear'},
+  data='{"nsconfig": {"level": "extended"}}'
+)
+print(result.__dict__)
+
+nitro_client.on_error('continue')
 
 # do the request to the NITRO API
 result = nitro_client.request(
@@ -118,6 +131,6 @@ result = nitro_client.request(
 
 # print result
 try:
-    print(result.json())
+    print(json.dumps(result.json(), sort_keys=True, indent=4))
 except:
-    print(result.text)
+    print(result.__dict__)

@@ -1,0 +1,10 @@
+{
+	"nsconfig":
+	{
+		"cip": "ENABLED",
+		"cipheader": "X-Forwarded-For",
+		"cookieversion": "1",
+		"securecookie": "ENABLED",
+		"timezone": "GMT+01:00-CET-Europe/Berlin"
+	}
+}

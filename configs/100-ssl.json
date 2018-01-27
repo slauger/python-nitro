@@ -1,0 +1,10 @@
+{
+    "sslparameter":
+    [ 
+        {
+	    "strictcachecks": "NO",
+            "denysslreneg": "NONSECURE",
+            "defaultprofile": "ENABLED"
+        }
+    ]
+}

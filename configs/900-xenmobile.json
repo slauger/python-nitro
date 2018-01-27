@@ -32,7 +32,7 @@
         {
             "servicegroupname": "sg_xm_mdm_ios",
             "servername": "xms01.customer.local",
-            "port": "9443"
+            "port": "8443"
         },
         {
             "servicegroupname": "sg_xm_mam",
@@ -168,7 +168,7 @@
         {
             "name": "pol_session_xenmobile_web",
             "rule": "REQ.HTTP.HEADER User-Agent NOTCONTAINS CitrixReceiver && REQ.HTTP.HEADER Referer EXISTS",
-            "action": "pol_session_xenmobile_web"
+            "action": "act_session_xenmobile_web"
         },
         {
             "name": "pol_session_xenmobile_ag",
@@ -181,20 +181,17 @@
         {
             "name": "vs_vpn_xm_mam_gateway",
             "priority": "100",
-            "policy": "pol_session_xenmobile_os",
-            "gotopriorityexpression": "END"
+            "policy": "pol_session_xenmobile_os"
         },
         {
             "name": "vs_vpn_xm_mam_gateway",
             "priority": "200",
-            "policy": "pol_session_xenmobile_web",
-            "gotopriorityexpression": "END"
+            "policy": "pol_session_xenmobile_web"
         },
         {
             "name": "vs_vpn_xm_mam_gateway",
             "priority": "300",
-            "policy": "pol_session_xenmobile_ag",
-            "gotopriorityexpression": "END"
+            "policy": "pol_session_xenmobile_ag"
         }
     ],
     "vpnvserver_staserver_binding":
@@ -260,7 +257,7 @@
         },
         {
             "name": "vs_vpn_xm_mam_gateway",
-            "policy": "pol_clientless_sf_rewrite",
+            "policy": "pol_clientless_no_rewrite",
             "priority": "200"
         }
     ],
@@ -268,44 +265,6 @@
     [
         {
             "intranetdomain": "customer.local"
-        }
-    ],
-    "vpnvserver_cachepolicy_binding":
-    [
-        {
-            "name": "vs_vpn_xm_mam_gateway",
-            "priority": "100",
-            "policy": "_cacheTCVPNStaticObjects",
-            "gotopriorityexpression": "END",
-            "bindpoint": "REQUEST"
-        },
-        {
-            "name": "vs_vpn_xm_mam_gateway",
-            "priority": "200",
-            "policy": "_cacheOCVPNStaticObjects",
-            "gotopriorityexpression": "END",
-            "bindpoint": "REQUEST"
-        },
-        {
-            "name": "vs_vpn_xm_mam_gateway",
-            "priority": "300",
-            "policy": "_cacheVPNStaticObjects",
-            "gotopriorityexpression": "END",
-            "bindpoint": "REQUEST"
-        },
-        {
-            "name": "vs_vpn_xm_mam_gateway",
-            "priority": "400",
-            "policy": "_noCacheRest",
-            "gotopriorityexpression": "END",
-            "bindpoint": "REQUEST"
-        },
-        {
-            "name": "vs_vpn_xm_mam_gateway",
-            "priority": "400",
-            "policy": "_cacheWFStaticObjects",
-            "gotopriorityexpression": "END",
-            "bindpoint": "RESPONSE"
         }
     ],
     "dnsaddrec":

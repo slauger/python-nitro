@@ -1,0 +1,14 @@
+{
+    "ntpserver": 
+    [ 
+        { 
+            "servername": "ntp.example.com"
+        }
+    ],
+    "ntpsync":
+    [
+        {
+
+        }
+    ]
+}

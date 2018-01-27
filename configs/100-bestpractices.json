@@ -1,0 +1,9 @@
+{
+    "nshttpparam": 
+    [ 
+        { 
+            "dropinvalreqs": "ON",
+            "markhttp09inval": "ON"
+        }
+    ]
+}

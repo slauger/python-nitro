@@ -1,0 +1,53 @@
+{ 
+    "server": 
+    [ 
+        { 
+            "name": "szc01.customer.local",
+            "ipaddress": "124.123.123.123",
+            "comment": "sharefile"
+        }
+    ],
+    "servicegroup":
+    [
+        {
+            "servicegroupname": "sg_sf_szc",
+            "servicetype": "SSL"
+        }
+    ],
+    "servicegroup_servicegroupmember_binding":
+    [
+        {
+            "servicegroupname": "sg_sf_szc",
+            "servername": "szc01.customer.local",
+            "port": "443"
+        }
+    ],
+    "servicegroup_lbmonitor_binding":
+    [
+        {
+            "servicegroupname": "sg_sf_szc",
+            "monitor_name": "tcp"
+        }
+    ],
+    "lbvserver": 
+    [ 
+        {
+            "name": "vs_lb_ssl_sf_sz",
+            "servicetype": "HTTP",
+            "persistencetype": "SOURCEIP",
+            "timeout": "5"
+        },
+        {
+            "name": "vs_lb_ssl_sf_cifs",
+            "servicetype": "HTTP",
+            "persistencetype": "SOURCEIP",
+            "timeout": "5"
+        },
+        {
+            "name": "vs_lb_ssl_sf_options",
+            "servicetype": "HTTP",
+            "persistencetype": "SOURCEIP",
+            "timeout": "5"
+        },
+    ],
+}

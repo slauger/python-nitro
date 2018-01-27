@@ -17,7 +17,6 @@ class NitroClient():
     self._headers = {
       'X-NITRO-USER': username,
       'X-NITRO-PASS': password,
-      'X-NITRO-ONERROR': 'rollback',
       'Accept': 'application/json',
       'Content-Type': 'application/json',
     }
