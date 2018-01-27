@@ -45,20 +45,6 @@ def add_argument(parser, arg, params):
 # add cli arguments
 parser = argparse.ArgumentParser(description='command line arguments.')
 
-parser.add_argument('method',
-    metavar='<method>',
-    help='http method (get/post/put/delete)',
-    type=str,
-    default=None,
-)
-
-parser.add_argument('file',
-    metavar='<file>',
-    help='command file for the macro api',
-    type=str,
-    default=None,
-)
-
 # optional arguments
 for key in add_args:
   add_argument(parser, key, add_args[key])
@@ -96,9 +82,6 @@ if config.has_option(section, 'verify_ssl'):
 else:
     verify_ssl = True
 
-with open(args.file, 'r') as socket:
-  payload = file.read(socket)
-
 # start nitro client
 nitro_client = nitro.NitroClient(url, username, password)
 
@@ -109,15 +92,15 @@ nitro_client.set_verify(verify_ssl)
 #if args.method != 'post':
 #  nitro_client.on_error('exit')
 
-nitro_client.on_error('continue')
-
-# do the request to the NITRO API
+# clear configuration
 result = nitro_client.request(
-  args.method,
+  method='post',
   endpoint='config',
-  objecttype='macroapi',
-  data=payload
+  objecttype='nsconfig',
+  params={'action': 'clear'},
+  data='{"nsconfig": {"level": "extended"}}'
 )
+print(result.__dict__)
 
 # print result
 try:

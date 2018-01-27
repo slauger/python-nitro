@@ -77,9 +77,24 @@
             "name": "vs_lb_ssl_mam", 
             "ipv46": "172.16.123.124",
             "port": "8443",
-            "servicetype": "SSL_BRIDGE",
-            "persistencetype": "SSLSESSION",
+            "servicetype": "SSL",
+            "persistencetype": "SOURCEIP",
             "timeout": "5"
+        }
+    ],
+    "lbvserver_servicegroup_binding":
+    [
+        {
+            "servicegroupname": "sg_xm_mdm",
+            "name": "vs_lb_ssl_bridge_xm_mdm"
+        },
+        {
+            "servicegroupname": "sg_xm_mdm_ios",
+            "name": "vs_lb_ssl_bridge_xm_mdm_ios"
+        },
+        {
+            "servicegroupname": "sg_xm_mam",
+            "name": "vs_lb_ssl_mam"
         }
     ],
     "vpnvserver":
@@ -233,6 +248,15 @@
         {
             "string": "CtxsAuthId",
             "name": "storefront_cookies"
+        }
+    ],
+    "vpnclientlessaccessprofile":
+    [
+        {
+            "profilename": "prof_clientless_sf_rewrite"
+        },
+        {
+            "profilename": "prof_clientless_no_rewrite"
         }
     ],
     "vpnclientlessaccesspolicy":
