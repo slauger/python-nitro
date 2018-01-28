@@ -2,8 +2,8 @@
     "server":
     [
         {
-            "name": "xms01.customer.local",
-            "ipaddress": "172.16.1.101",
+            "name": "xms01.linux-dev.local",
+            "ipaddress": "10.10.0.50",
             "comment": "xenmobile"
         }
     ],
@@ -26,17 +26,17 @@
     [
         {
             "servicegroupname": "sg_xm_mdm",
-            "servername": "xms01.customer.local",
+            "servername": "xms01.linux-dev.local",
             "port": "443"
         },
         {
             "servicegroupname": "sg_xm_mdm_ios",
-            "servername": "xms01.customer.local",
+            "servername": "xms01.linux-dev.local",
             "port": "8443"
         },
         {
             "servicegroupname": "sg_xm_mam",
-            "servername": "xms01.customer.local",
+            "servername": "xms01.linux-dev.local",
             "port": "8443"
         }
     ],
@@ -59,7 +59,7 @@
     [ 
         {
             "name": "vs_lb_ssl_bridge_xm_mdm",
-            "ipv46": "172.16.2.123",
+            "ipv46": "10.10.0.104",
             "port": "443",
             "servicetype": "SSL_BRIDGE",
             "persistencetype": "SSLSESSION",
@@ -67,7 +67,7 @@
         },
         { 
             "name": "vs_lb_ssl_bridge_xm_mdm_ios", 
-            "ipv46": "172.16.123.123",
+            "ipv46": "10.10.0.104",
             "port": "8443",
             "servicetype": "SSL_BRIDGE",
             "persistencetype": "SSLSESSION",
@@ -75,7 +75,7 @@
         },
         { 
             "name": "vs_lb_ssl_mam", 
-            "ipv46": "172.16.123.124",
+            "ipv46": "10.10.0.105",
             "port": "8443",
             "servicetype": "SSL",
             "persistencetype": "SOURCEIP",
@@ -97,12 +97,27 @@
             "name": "vs_lb_ssl_mam"
         }
     ],
+    "csvserver":
+    [
+        {
+            "name": "vs_cs_http_xm_mdm",
+            "servicetype": "HTTP",
+            "ipv46": "10.10.0.104",
+            "port": "80"
+        },
+        {
+            "name": "vs_cs_http_xm_mam",
+            "servicetype": "HTTP",
+            "ipv46": "10.10.0.106",
+            "port": "80"
+        }
+    ],
     "vpnvserver":
     [
         {
             "name": "vs_vpn_xm_mam_gateway",
             "servicetype": "SSL",
-            "ipv46": "172.16.123.125",
+            "ipv46": "10.10.0.106",
             "port": "443",
             "maxloginattempts": "10",
             "failedlogintimeout": "30"
@@ -133,7 +148,7 @@
             "clientlessvpnmode": "ON",
             "clientlessmodeurlencoding": "TRANSPARENT",
             "securebrowse": "ENABLED",
-            "storefronturl": "https://mdm.example.com:8443"
+            "storefronturl": "https://mdm.linux-dev.de:8443"
         },
         {
             "name": "act_session_xenmobile_web",
@@ -150,9 +165,9 @@
             "clientlessvpnmode": "ON",
             "clientlessmodeurlencoding": "TRANSPARENT",
             "securebrowse": "ENABLED",
-            "storefronturl": "https://mdm.example.com:8443",
-            "homepage": "https://mdm.customer.com:8443/Citrix/StoreWeb",
-            "wihome": "https://mdm.customer.de:8443/Citrix/StoreWeb"
+            "storefronturl": "https://mdm.linux-dev.de:8443",
+            "homepage": "https://mdm.linux-dev.de:8443/Citrix/StoreWeb",
+            "wihome": "https://mdm.linux-dev.de:8443/Citrix/StoreWeb"
         },
         {
             "name": "act_session_xenmobile_ag",
@@ -169,8 +184,8 @@
             "clientlessvpnmode": "OFF",
             "clientlessmodeurlencoding": "TRANSPARENT",
             "securebrowse": "ENABLED",
-            "storefronturl": "https://mdm.example.com:8443",
-            "homepage": "https://mdm.customer.com:8443/Citrix/StoreWeb"
+            "storefronturl": "https://linux-dev.de:8443",
+            "homepage": "https://mdm.linux-dev.de:8443/Citrix/StoreWeb"
         }
     ],
     "vpnsessionpolicy":
@@ -214,7 +229,7 @@
         {
             "name": "vs_vpn_xm_mam_gateway",
             "staaddresstype": "IPV4",
-            "staserver": "https://xms01.tmxlab.local:8443"
+            "staserver": "https://xms01.linux-dev.local:8443"
         }
     ],
     "policypatset":
@@ -226,11 +241,11 @@
     "policypatset_pattern_binding":
     [
         {
-            "string": "mdm.example.com",
+            "string": "mdm.linux-dev.de",
             "name": "ns_cvpn_default_inet_domains"
         },
         {
-            "string": "mdm.example.com:8443",
+            "string": "mdm.linux-dev.de:8443",
             "name": "ns_cvpn_default_inet_domains"
         },
         {
@@ -277,25 +292,25 @@
         {
             "name": "vs_vpn_xm_mam_gateway",
             "policy": "pol_clientless_sf_rewrite",
-            "priority": "100"
+            "priority": "200"
         },
         {
             "name": "vs_vpn_xm_mam_gateway",
             "policy": "pol_clientless_no_rewrite",
-            "priority": "200"
+            "priority": "100"
         }
     ],
     "vpnglobal_domain_binding":
     [
         {
-            "intranetdomain": "customer.local"
+            "intranetdomain": "linux-dev.local"
         }
     ],
     "dnsaddrec":
     [
         {
-            "hostname": "mdm.example.com",
-            "ipaddress": "172.16.123.124"
+            "hostname": "mdm.linux-dev.de",
+            "ipaddress": "10.10.0.105"
         }
     ]
 }
